@@ -44,6 +44,21 @@ void aws_byte_buf_cat_harness() {
     /* operation under verification */
     if (aws_byte_buf_cat(&dest, number_of_args, &buffer1, &buffer2, &buffer3) == AWS_OP_SUCCESS) {
         assert((old_dest.capacity - old_dest.len) >= (buffer1.len + buffer2.len + buffer3.len));
+
+        /* Georgia check contents, just first and last byte*/
+        if (buffer1.len > 0) {
+            assert(dest.buffer[old_dest.len] == buffer1.buffer[0]);
+            assert(dest.buffer[old_dest.len + buffer1.len - 1] == buffer1.buffer[buffer1.len - 1]);
+        }
+        if (buffer2.len > 0) {
+            assert(dest.buffer[old_dest.len + buffer1.len] == buffer2.buffer[0]);
+            assert(dest.buffer[old_dest.len + buffer1.len + buffer2.len - 1] == buffer2.buffer[buffer2.len - 1]);
+        }
+        if (buffer3.len > 0) {
+            assert(dest.buffer[old_dest.len + buffer1.len + buffer2.len] == buffer3.buffer[0]);
+            assert(dest.buffer[old_dest.len + buffer1.len + buffer2.len + buffer3.len - 1] == buffer3.buffer[buffer3.len - 1]);
+        }
+
     } else {
         assert((old_dest.capacity - old_dest.len) < (buffer1.len + buffer2.len + buffer3.len));
     }
