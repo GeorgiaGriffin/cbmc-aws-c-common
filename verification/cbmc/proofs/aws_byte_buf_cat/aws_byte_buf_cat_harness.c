@@ -5,6 +5,7 @@
 
 #include <aws/common/byte_buf.h>
 #include <proof_helpers/make_common_data_structures.h>
+#include <proof_helpers/utils.h>
 
 void aws_byte_buf_cat_harness() {
     /* parameters */
@@ -45,18 +46,15 @@ void aws_byte_buf_cat_harness() {
     if (aws_byte_buf_cat(&dest, number_of_args, &buffer1, &buffer2, &buffer3) == AWS_OP_SUCCESS) {
         assert((old_dest.capacity - old_dest.len) >= (buffer1.len + buffer2.len + buffer3.len));
 
-        /* Georgia check contents, just first and last byte*/
+        /* Check buffer contents match */
         if (buffer1.len > 0) {
-            assert(dest.buffer[old_dest.len] == buffer1.buffer[0]);
-            assert(dest.buffer[old_dest.len + buffer1.len - 1] == buffer1.buffer[buffer1.len - 1]);
+            assert_bytes_match(dest.buffer+old_dest.len, buffer1.buffer, buffer1.len);
         }
         if (buffer2.len > 0) {
-            assert(dest.buffer[old_dest.len + buffer1.len] == buffer2.buffer[0]);
-            assert(dest.buffer[old_dest.len + buffer1.len + buffer2.len - 1] == buffer2.buffer[buffer2.len - 1]);
+            assert_bytes_match(dest.buffer+old_dest.len+buffer1.len, buffer2.buffer, buffer2.len);
         }
         if (buffer3.len > 0) {
-            assert(dest.buffer[old_dest.len + buffer1.len + buffer2.len] == buffer3.buffer[0]);
-            assert(dest.buffer[old_dest.len + buffer1.len + buffer2.len + buffer3.len - 1] == buffer3.buffer[buffer3.len - 1]);
+            assert_bytes_match(dest.buffer+old_dest.len+buffer1.len+buffer2.len, buffer3.buffer, buffer3.len);
         }
 
     } else {
