@@ -21,3 +21,4 @@ PROJECT_SOURCES += $(SRCDIR)/source/common.c
 PROJECT_SOURCES += $(SRCDIR)/source/string.c
 
 include ../Makefile.common
+

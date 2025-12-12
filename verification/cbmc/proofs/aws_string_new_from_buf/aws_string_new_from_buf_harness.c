@@ -24,9 +24,10 @@ void aws_string_new_from_buf_harness() {
 
     /* assertions */
     if (str) {
-        assert(str->len == buf.len);  // length matches 
-        assert(str->bytes[str->len] == 0);  // Null terminated
-        assert_bytes_match(str->bytes, buf.buffer, str->len);  // bytes match
-        assert(aws_string_is_valid(str));  // valid string 
+        assert(str->len == buf.len);
+        assert(str->bytes[str->len] == 0);
+        assert_bytes_match(str->bytes, buf.buffer, str->len);
+        assert(aws_string_is_valid(str));
     }
 }
+
